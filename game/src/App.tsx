@@ -1,10 +1,13 @@
 import Game from "./components/Game";
+import { GameProvider } from "./context/GameProvider";
 
 const App = () => {
   return (
-    <div className="flex h-screen w-screen items-center justify-center">
-      <Game />
-    </div>
+    <GameProvider>
+      <div className="flex h-screen w-screen items-center justify-center">
+        <Game />
+      </div>
+    </GameProvider>
   );
 };
 
