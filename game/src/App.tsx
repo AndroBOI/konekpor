@@ -2,14 +2,18 @@ import { GameProvider } from "./context/GameProvider";
 import { Routes, Route } from "react-router-dom";
 import HomePage from "./pages/home-page";
 import GamePage from "./pages/game-page";
+import CreateRoomPage from "./pages/create-room-page";
+import JoinRoomPage from "./pages/join-room-page";
 
 const App = () => {
   return (
     <GameProvider>
       <div className="flex min-h-screen justify-center items-center">
         <Routes>
-          <Route path="/" element={<HomePage />} />
           <Route path="/game" element={<GamePage />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/create-room" element={<CreateRoomPage />} />
+          <Route path="/join-room" element={<JoinRoomPage />} />
         </Routes>
       </div>
     </GameProvider>
