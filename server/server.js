@@ -75,8 +75,15 @@ io.on("connection", (socket) => {
       socket.emit("join-error", "Room does not exist");
       return;
     }
-    socket.join(roomId); 
+    socket.join(roomId);
     broadcastRoom(roomId);
+  });
+
+  socket.on("start-game", (roomId) => {
+    const room = io.sockets.adapter.rooms.get(roomId);
+    if (!room) return;
+    io.to(roomId).emit("game-start", `/game/${roomId}`);
+    console.info("game started in room", roomId);
   });
 });
 

@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import socket from "../lib/socket";
 
@@ -9,6 +9,11 @@ const MAX_PLAYERS = 2;
 const RoomPage = () => {
   const { id } = useParams<{ id: string }>();
   const [players, setPlayers] = useState<Player[]>([]);
+  const navigate = useNavigate();
+  
+  const handleStart = () => {
+    socket.emit("start-game", id);
+  };
 
   useEffect(() => {
     if (!id) return;
@@ -21,6 +26,10 @@ const RoomPage = () => {
         setPlayers(players);
       },
     );
+
+    socket.on("game-start", (url: string) => {
+      navigate(url);
+    });
 
     return () => {
       socket.off("room-update");
@@ -44,8 +53,8 @@ const RoomPage = () => {
       </div>
 
       <button
-        disabled
-        className="bg-green-300 text-white px-10 py-3 rounded-md opacity-50 cursor-not-allowed"
+        onClick={handleStart}
+        className="bg-green-500 hover:bg-green-300 text-white px-10 py-3 rounded-md opacity-50"
       >
         Start
       </button>

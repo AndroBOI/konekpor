@@ -10,7 +10,7 @@ const App = () => {
     <GameProvider>
       <div className="flex min-h-screen justify-center items-center">
         <Routes>
-          <Route path="/game" element={<GamePage />} />
+          <Route path="/game/:id" element={<GamePage />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/room/:id" element={<RoomPage />} />
           <Route path="/join-room" element={<JoinRoomPage />} />
