@@ -23,6 +23,13 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.info("client disconnected:", socket.id);
   });
+
+  socket.on("create-room", () => {
+    const roomId = crypto.randomUUID();
+
+    socket.join(roomId);
+    socket.emit("room-created", roomId);
+  });
 });
 
 httpServer.listen(3000, () => {
