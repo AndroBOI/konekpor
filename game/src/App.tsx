@@ -2,7 +2,7 @@ import { GameProvider } from "./context/GameProvider";
 import { Routes, Route } from "react-router-dom";
 import HomePage from "./pages/home-page";
 import GamePage from "./pages/game-page";
-import CreateRoomPage from "./pages/create-room-page";
+import RoomPage from "./pages/create-room-page";
 import JoinRoomPage from "./pages/join-room-page";
 
 const App = () => {
@@ -12,7 +12,7 @@ const App = () => {
         <Routes>
           <Route path="/game" element={<GamePage />} />
           <Route path="/" element={<HomePage />} />
-          <Route path="/room/:id" element={<CreateRoomPage />} />
+          <Route path="/room/:id" element={<RoomPage />} />
           <Route path="/join-room" element={<JoinRoomPage />} />
         </Routes>
       </div>

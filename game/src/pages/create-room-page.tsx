@@ -1,13 +1,55 @@
 import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import socket from "../lib/socket";
 
-const CreateRoomPage = () => {
+type Player = { id: string; role: "host" | "guest" };
+
+const MAX_PLAYERS = 2;
+
+const RoomPage = () => {
   const { id } = useParams<{ id: string }>();
+  const [players, setPlayers] = useState<Player[]>([]);
+
+  useEffect(() => {
+    if (!id) return;
+
+    socket.emit("get-room", id);
+
+    socket.on(
+      "room-update",
+      ({ players }: { roomId: string; players: Player[] }) => {
+        setPlayers(players);
+      },
+    );
+
+    return () => {
+      socket.off("room-update");
+    };
+  }, [id]);
+
+  const host = players.find((p) => p.role === "host");
+  const guest = players.find((p) => p.role === "guest");
+
   return (
     <div className="p-20 shadow-md flex flex-col justify-center items-center gap-y-5">
       <div>id - {id}</div>
-      <div className="bg-blue-300 text-white inline px-10 py-5 rounded-md">
-        Waiting... (1/0)
+
+      <div className="flex flex-col gap-y-2">
+        <div>User 1 (host): {host?.id ?? "waiting..."}</div>
+        <div>User 2 (guest): {guest?.id ?? "waiting..."}</div>
       </div>
+
+      <div className="bg-blue-300 text-white px-10 py-5 rounded-md">
+        Waiting... ({players.length}/{MAX_PLAYERS})
+      </div>
+
+      <button
+        disabled
+        className="bg-green-300 text-white px-10 py-3 rounded-md opacity-50 cursor-not-allowed"
+      >
+        Start
+      </button>
+
       <Link to={"/"} className="text-red-300 hover:underline">
         Cancel
       </Link>
@@ -15,4 +57,4 @@ const CreateRoomPage = () => {
   );
 };
 
-export default CreateRoomPage;
+export default RoomPage;
